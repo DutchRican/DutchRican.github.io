@@ -46,7 +46,7 @@ function setColor() {
 }
 
 function setSpeed() {
-    SPEED = 1000 - (speedSetting.value * 8.25);
+    SPEED = 1000 - (speedSetting.value * 9);
 }
 
 function openModal() {
@@ -181,6 +181,7 @@ function updateLives() {
 
 drawBoard();
 getHighScore();
+setSpeed();
 
 let loopTimer = Date.now();
 function gameLoop() {
