@@ -1,0 +1,39 @@
+
+.jumbotron-sleek {
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+#game {
+    border: 1px solid black;
+}
+
+#information {
+    display: flex;
+    flex-direction: column;
+}
+
+.topSection {
+    flex:2;
+}
+.bottomSection {
+    flex:1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+#playingField {
+    position: inherit;
+}
+
+#startButton {
+    margin-bottom: 6px;
+}
+
+#gameInformation:hover {
+    color: blue;
+}
+.modal.fade.in {
+    opacity: 1;
+}
