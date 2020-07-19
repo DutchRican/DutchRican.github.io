@@ -72,6 +72,7 @@ function setButtonTextAndColor() {
 }
 
 canvas.addEventListener('mousedown', (event) => {
+    event.preventDefault();
     isDrawing = !isAlive ? true : false;
     !isAlive && drawAtLocation(event.pageX, event.pageY);
 });
@@ -81,6 +82,7 @@ canvas.addEventListener('mouseup', () => {
 });
 
 canvas.addEventListener('mousemove', (event) => {
+    event.preventDefault();
     isDrawing && drawAtLocation(event.pageX, event.pageY);
 });
 
