@@ -5,7 +5,7 @@ const highscore = document.getElementById('highscore');
 const colorSetting = document.getElementById('colorSetting');
 const speedSetting = document.getElementById('speedSetting');
 const informationModal = document.getElementById('informationModal');
-
+const patternSelector = document.getElementById('patternSelector');
 const ctx = canvas.getContext('2d');
 
 const ROWS = 80;
@@ -17,6 +17,7 @@ let SPEED = 125;
 let isAlive = false;
 let isDrawing = false;
 let highestScore = 0;
+
 
 let gameField = createFreshBoard();
 
@@ -71,48 +72,14 @@ function setButtonTextAndColor() {
     startButton.classList.toggle('btn-outline-danger', isAlive);
 }
 
-if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-    canvas.addEventListener('touchstart', evt => {
-        event.preventDefault();
-        const touches = evt.changedTouches;
-        isDrawing = !isAlive ? true : false;
-        !isAlive && touches && drawAtLocation(touches[0].pageX, touches[0].pageY);
-    });
-
-    canvas.addEventListener('touchend', () => {
-        isDrawing = false;
-    });
-
-    canvas.addEventListener('touchmove', evt => {
-        evt.preventDefault();
-        const touches = evt.changedTouches;
-        isDrawing && touches && drawAtLocation(touches[0].pageX, touches[0].pageY);
-    });
-} else {
-    canvas.addEventListener('mousedown', (event) => {
-        event.preventDefault();
-        isDrawing = !isAlive ? true : false;
-        !isAlive && drawAtLocation(event.pageX, event.pageY);
-    });
-    canvas.addEventListener('mouseup', () => {
-        isDrawing = false;
-    });
-
-    canvas.addEventListener('mousemove', (event) => {
-        event.preventDefault();
-        isDrawing && drawAtLocation(event.pageX, event.pageY);
-    });
-}
-
 function getRelativeLocation(x, y, element, xFactor, yFactor) {
     let relX = Math.floor((x - element.offsetLeft) / xFactor);
     let relY = Math.floor((y - element.offsetTop) / yFactor);
     return { x: relX, y: relY };
 }
 
-function drawAtLocation(x, y) {
-
-    const location = getRelativeLocation(x, y, canvas, SIZE, SIZE);
+function drawAtLocation(x, y, isTranslated = false) {
+    const location = isTranslated ? { x, y } : getRelativeLocation(x, y, canvas, SIZE, SIZE);
     gameField[location.x][location.y] = { alive: true };
     drawSquare(location, ALIVE);
 }
