@@ -17,6 +17,7 @@ let SPEED = 125;
 let isAlive = false;
 let isDrawing = false;
 let highestScore = 0;
+let currentCount = 0;
 
 
 let gameField = createFreshBoard();
@@ -84,18 +85,14 @@ function drawAtLocation(x, y, isTranslated = false) {
     drawSquare(location, ALIVE);
 }
 
-function getLifeCount() {
-    let count = 0;
-    gameField.forEach((row) => row.forEach((col) => {
-        if (col.alive) count++;
-    }));
-    if (count > highestScore) {
-        highestScore = count;
+function setLifeCount() {
+    if (currentCount > highestScore) {
+        highestScore = currentCount;
         highscore.textContent = highestScore;
         setHighScore(highestScore);
     }
-    counter.textContent = count;
-    if (!count) {
+    counter.textContent = currentCount;
+    if (!currentCount) {
         startButton.textContent = "Start Game";
         isAlive = false;
         setButtonTextAndColor();
@@ -130,19 +127,24 @@ function getNeighbors(block) {
 }
 
 function updateLives() {
-    let tempField = createFreshBoard();
+    let tempField = [];
+    let lifeCount = 0;
     for (let x = 0; x < ROWS; x++) {
+        tempField[x] = [];
         for (let y = 0; y < COLS; y++) {
             let lifeNeighbors = getNeighbors({ x, y });
             if (gameField[x][y].alive && (lifeNeighbors > 3 || lifeNeighbors < 2)) {
-                tempField[x][y].alive = false;
+                tempField[x].push({alive: false});
             } else if (!gameField[x][y].alive && lifeNeighbors === 3) {
-                tempField[x][y].alive = true;
+                tempField[x].push({alive: true});
+                lifeCount++;
             } else {
-                tempField[x][y].alive = gameField[x][y].alive;
+                tempField[x].push(gameField[x][y]);
+                if (gameField[x][y].alive) lifeCount++;
             }
         }
     }
+    currentCount = lifeCount;
     return tempField;
 }
 
@@ -157,7 +159,7 @@ function gameLoop() {
     if (delta > SPEED) {
         gameField = updateLives();
         drawBoard();
-        getLifeCount();
+        setLifeCount();
         loopTimer = Date.now();
     }
     isAlive && requestAnimationFrame(gameLoop);
