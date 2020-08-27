@@ -15,6 +15,7 @@ Object.keys(shapes).forEach(pattern => $(patternSelector).append(`<option value=
 
 function selectingPattern() {
     gameField = createFreshBoard();
+    generationCount = 0;
     drawBoard();
     const pattern = shapes[patternSelector.value];
     const offSetX = Math.floor((ROWS - pattern.width) / 2);
